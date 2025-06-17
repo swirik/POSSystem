@@ -22,9 +22,9 @@
 
     <HBox spacing="10">
         <Button fx:id="addButton" text="Add Product"/>
-        <Button fx:id="searchButton" text="Search"/>
+        <TextField fx:id="searchField" promptText="Search by name..." onKeyReleased="#handleSearch"/>
         <Button fx:id="sortButton" text="Sort A-Z"/>
-        <Button fx:id="removeButton" text="Remove"/>
+        <Button fx:id="removeButton" text="Remove" onAction="#handleRemoveProduct"/>
         <Button fx:id="editButton" text="Edit"/>
 
     </HBox>
