@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Scene?>
+<?import javafx.scene.Parent?>
+
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="system.EditProductController"
+      spacing="10" alignment="CENTER">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+    <Label text="Add New Product" style="-fx-font-size: 18px;"/>
+
+    <TextField fx:id="nameField" promptText="Product Name" prefWidth="250"/>
+    <TextField fx:id="priceField" promptText="Price"/>
+    <TextField fx:id="quantityField" promptText="Quantity"/>
+
+    <Button text="Add" onAction="#handleAdd"/>
+</VBox>

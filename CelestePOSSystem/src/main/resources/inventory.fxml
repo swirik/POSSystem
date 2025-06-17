@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="system.InventoryController" spacing="10" alignment="TOP_CENTER" style="-fx-background-color: #F5F5F5;">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Inventory Management" style="-fx-font-size: 20px;"/>
+
+    <TableView fx:id="productTable" prefWidth="600">
+        <columns>
+            <TableColumn fx:id="codeColumn" text="Code" prefWidth="120"/>
+            <TableColumn fx:id="nameColumn" text="Product Name" prefWidth="200"/>
+            <TableColumn fx:id="priceColumn" text="Price" prefWidth="150"/>
+            <TableColumn fx:id="quantityColumn" text="Quantity" prefWidth="150"/>
+        </columns>
+    </TableView>
+
+    <HBox spacing="10">
+        <Button fx:id="addButton" text="Add Product"/>
+        <Button fx:id="searchButton" text="Search"/>
+        <Button fx:id="sortButton" text="Sort A-Z"/>
+        <Button fx:id="removeButton" text="Remove"/>
+        <Button fx:id="editButton" text="Edit"/>
+
+    </HBox>
+</VBox>
