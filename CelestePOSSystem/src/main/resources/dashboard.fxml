@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="system.DashboardController">
+
+   <!-- Sidebar / Left Navigation -->
+   <left>
+      <VBox spacing="10.0" style="-fx-background-color: #2C3E50;" prefWidth="200.0" alignment="TOP_CENTER">
+         <padding>
+            <Insets top="10" right="10" bottom="10" left="10"/>
+         </padding>
+
+         <Label text="Celeste POS" style="-fx-text-fill: white; -fx-font-size: 18;" />
+         <Button fx:id="btnHome" text="Home" prefWidth="180"/>
+         <Button fx:id="btnInventory" text="Inventory" prefWidth="180"/>
+         <Button fx:id="btnSales" text="Sales" prefWidth="180"/>
+         <Button fx:id="btnExit" text="Exit" prefWidth="180"/>
+      </VBox>
+   </left>
+
+   <!-- Main Content Area -->
+   <center>
+      <StackPane fx:id="mainContent" style="-fx-background-color: #ECF0F1;">
+         <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+         </padding>
+
+         <Label fx:id="labelContent" text="Welcome to Celeste POS!" style="-fx-font-size: 20;" />
+      </StackPane>
+   </center>
+
+</BorderPane>
