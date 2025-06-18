@@ -1,5 +1,8 @@
 package system;
 
+import javafx.scene.control.Alert;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import system.Inventory;
 import system.Product;
 import javafx.fxml.FXML;
@@ -18,16 +21,48 @@ public class AddProductController {
         this.inventory = inventory;
     }
 
-    @FXML
     public void handleAdd() {
-        String name = nameField.getText();
-        double price = Double.parseDouble(priceField.getText());
-        int quantity = Integer.parseInt(quantityField.getText());
+        String name = nameField.getText().trim();
+        String priceText = priceField.getText().trim();
+        String quantityText = quantityField.getText().trim();
 
-        inventory.addProduct(new Product(name, price, quantity));
+        if (name.isEmpty() || priceText.isEmpty() || quantityText.isEmpty()) {
+            showAlert("Validation Error", "All fields are required.");
+            return;
+        }
 
-        // Close the dialog
-        Stage stage = (Stage) nameField.getScene().getWindow();
-        stage.close();
+        double price;
+        int quantity;
+
+        try {
+            price = Double.parseDouble(priceText);
+            quantity = Integer.parseInt(quantityText);
+        } catch (NumberFormatException e) {
+            showAlert("Validation Error", "Price must be a decimal number, Quantity must be an integer.");
+            return;
+        }
+
+        if (price < 0 || quantity < 0) {
+            showAlert("Validation Error", "Price and Quantity must be positive.");
+            return;
+        }
+
+        inventory.addProduct(name, price, quantity);
+        ((Stage) nameField.getScene().getWindow()).close(); // Close the form
     }
+
+    private void showAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+    @FXML
+    private void handleKeyPressed(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            handleAdd();
+        }
+    }
+
 }

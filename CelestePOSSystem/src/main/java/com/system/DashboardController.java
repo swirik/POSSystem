@@ -29,7 +29,7 @@ public class DashboardController {
     private void showHome() {
         mainContent.getChildren().clear();
         mainContent.getChildren().add(labelContent);
-        labelContent.setText("Welcome to Celeste POS!");
+        labelContent.setText("(Home Screen)!");
     }
 
     private void loadFXMLIntoMain(String fxmlPath) {
