@@ -61,6 +61,7 @@ public class DashboardController {
     private void loadSales() {
         mainContent.getChildren().clear();
         mainContent.getChildren().add(salesView);
+        salesController.requestFocusOnBarcodeField();
     }
 
 }

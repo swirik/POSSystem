@@ -38,10 +38,8 @@ public class SalesController {
         cartTable.setItems(cartItems);
         updateTotal();
 
-        Platform.runLater(() -> productCodeField.requestFocus());  // Optional: auto focus barcode field
-        productCodeField.setOnAction(e -> {
-            handleAddToCart();
-        });
+        Platform.runLater(() -> productCodeField.requestFocus());
+        productCodeField.setOnAction(e -> {handleAddScannedProduct();});
     }
 
     public void setInventoryController(InventoryController controller) {
@@ -52,7 +50,8 @@ public class SalesController {
     private void handleAddToCart() {
         String code = productCodeField.getText().trim();
         String quantityText = quantityField.getText().trim();
-
+   //     quantityField.setDisable(true);
+   //     quantityField.setVisible(false);
         if (code.isEmpty() || quantityText.isEmpty()) {
             showAlert("Missing Input", "Please enter both product code and quantity.");
             return;
@@ -108,11 +107,7 @@ public class SalesController {
     }
     private void handleAddScannedProduct() {
         String code = productCodeField.getText().trim();
-
-        if (code.isEmpty()) {
-            showAlert("Missing Input", "Please scan a product code.");
-            return;
-        }
+        if (code.isEmpty()) return;
 
         Product product = DatabaseHelper.getProductByCode(code);
         if (product == null) {
@@ -121,26 +116,27 @@ public class SalesController {
             return;
         }
 
-        // Check if already in cart
+        // 🔍 Check if product is already in cart
         for (SalesCartItem item : cartItems) {
             if (item.getCode().equals(product.getCode())) {
                 int newQty = item.getQuantity() + 1;
 
-                if (product.getQuantity() < newQty) {
-                    showAlert("Insufficient Stock", "Only " + product.getQuantity() + " left in stock.");
+                if (newQty > product.getQuantity()) {
+                    showAlert("Insufficient Stock", "Only " + product.getQuantity() + " available.");
                     productCodeField.clear();
                     return;
                 }
 
                 item.setQuantity(newQty);
-                item.setSubtotal(product.getPrice() * newQty);
+                item.setSubtotal(newQty * item.getPrice());
                 updateTotal();
                 productCodeField.clear();
+                Platform.runLater(() -> productCodeField.requestFocus());
                 return;
             }
         }
 
-        // Add new product if not already in cart
+        // 🆕 If not in cart, add as new row
         if (product.getQuantity() < 1) {
             showAlert("Out of Stock", "This product is currently out of stock.");
             productCodeField.clear();
@@ -153,7 +149,9 @@ public class SalesController {
 
         updateTotal();
         productCodeField.clear();
+        Platform.runLater(() -> productCodeField.requestFocus());
     }
+
 
 
 
@@ -197,5 +195,9 @@ public class SalesController {
         alert.setContentText(content);
         alert.showAndWait();
     }
+    public void requestFocusOnBarcodeField() {
+        Platform.runLater(() -> productCodeField.requestFocus());
+    }
+
 
 }
