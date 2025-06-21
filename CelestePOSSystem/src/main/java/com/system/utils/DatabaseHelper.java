@@ -43,6 +43,21 @@ public class DatabaseHelper {
             e.printStackTrace();
         }
     }
+    public static boolean updateProduct(String oldCode, Product updatedProduct) {
+        String query = "UPDATE products SET code = ?, name = ?, price = ?, quantity = ? WHERE code = ?";
+        try (Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, updatedProduct.getCode());
+            stmt.setString(2, updatedProduct.getName());
+            stmt.setDouble(3, updatedProduct.getPrice());
+            stmt.setInt(4, updatedProduct.getQuantity());
+            stmt.setString(5, oldCode);
+            int affected = stmt.executeUpdate();
+            return affected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
     public static List<Product> getAllProducts() {
         List<Product> productList = new ArrayList<>();
 
@@ -65,6 +80,17 @@ public class DatabaseHelper {
         }
 
         return productList;
+    }
+    public static boolean deleteProductByCode(String code) {
+        String query = "DELETE FROM products WHERE code = ?";
+        try (Connection conn = connect(); PreparedStatement stmt = conn.prepareStatement(query)) {
+            stmt.setString(1, code);
+            int affectedRows = stmt.executeUpdate();
+            return affectedRows > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 

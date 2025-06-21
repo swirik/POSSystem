@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 
 public class EditProductController {
 
+    @FXML private TextField codeField;
     @FXML private TextField nameField;
     @FXML private TextField priceField;
     @FXML private TextField quantityField;
@@ -15,6 +16,7 @@ public class EditProductController {
 
     public void setProduct(Product product) {
         this.product = product;
+        codeField.setText(product.getCode());
         nameField.setText(product.getName());
         priceField.setText(String.valueOf(product.getPrice()));
         quantityField.setText(String.valueOf(product.getQuantity()));

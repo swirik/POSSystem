@@ -29,14 +29,13 @@ public class InventoryController {
 
     @FXML private Button addButton;
     @FXML private Button searchButton;
-    @FXML private Button sortButton;
     @FXML private Button removeButton;
     @FXML private Button editButton;
+    @FXML private Button deleteButton;
 
     private final Inventory inventory = new Inventory();
     private FilteredList<Product> filteredList;
-    @FXML
-    private TextField searchField;
+    @FXML private TextField searchField;
 
     @FXML
     public void initialize() {
@@ -53,12 +52,13 @@ public class InventoryController {
         sortedList.comparatorProperty().bind(productTable.comparatorProperty());
 
         productTable.setItems(sortedList);
-        productTable.setItems(inventory.getProductList());
+        productTable.setItems(Inventory.getProductList());
 
         // Button actions
         addButton.setOnAction(e -> handleAdd());
         removeButton.setOnAction(e -> handleRemove());
         editButton.setOnAction(e -> handleEdit());
+        deleteButton.setOnAction(e ->handleDeleteProduct());
     }
 
     @FXML
@@ -115,7 +115,7 @@ public class InventoryController {
     }
 
     private void handleSort() {
-        inventory.sortByName();
+        Inventory.sortByName();
     }
 
     @FXML
@@ -153,6 +153,34 @@ public class InventoryController {
     public void refreshTable() {
         productTable.setItems(FXCollections.observableArrayList(DatabaseHelper.getAllProducts()));
     }
+
+    @FXML
+    private void handleDeleteProduct() {
+        Product selected = productTable.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showAlert("No Selection", "Please select a product to delete.");
+            return;
+        }
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Delete Product");
+        confirm.setHeaderText(null);
+        confirm.setContentText("Are you sure you want to delete " + selected.getName() + "?");
+
+        confirm.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                boolean deleted = DatabaseHelper.deleteProductByCode(selected.getCode());
+                if (deleted) {
+                    refreshTable();
+                    showAlert("Deleted", "Product was successfully removed.");
+                } else {
+                    showAlert("Failed", "Failed to delete product.");
+                }
+            }
+        });
+    }
+   // boolean updated = DatabaseHelper.updateProduct(oldCode, new Product(
+   //         newCode, newName, newPrice, newQty
+   // ));
 
 
 }

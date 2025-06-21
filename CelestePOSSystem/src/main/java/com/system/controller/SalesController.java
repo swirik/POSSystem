@@ -29,11 +29,6 @@ public class SalesController {
 
     @FXML
     public void initialize() {
-        productCodeField.setOnAction(e -> {
-            handleAddToCart();  // Pressing Enter acts like button click
-        });
-
-        Platform.runLater(() -> productCodeField.requestFocus());  // Optional: auto focus barcode field
         codeColumn.setCellValueFactory(data -> data.getValue().codeProperty());
         nameColumn.setCellValueFactory(data -> data.getValue().nameProperty());
         priceColumn.setCellValueFactory(data -> data.getValue().priceProperty());
@@ -42,6 +37,11 @@ public class SalesController {
 
         cartTable.setItems(cartItems);
         updateTotal();
+
+        Platform.runLater(() -> productCodeField.requestFocus());  // Optional: auto focus barcode field
+        productCodeField.setOnAction(e -> {
+            handleAddToCart();
+        });
     }
 
     public void setInventoryController(InventoryController controller) {
@@ -105,6 +105,54 @@ public class SalesController {
         updateTotal();
         productCodeField.clear();
         quantityField.clear();
+    }
+    private void handleAddScannedProduct() {
+        String code = productCodeField.getText().trim();
+
+        if (code.isEmpty()) {
+            showAlert("Missing Input", "Please scan a product code.");
+            return;
+        }
+
+        Product product = DatabaseHelper.getProductByCode(code);
+        if (product == null) {
+            showAlert("Product Not Found", "No product found with code: " + code);
+            productCodeField.clear();
+            return;
+        }
+
+        // Check if already in cart
+        for (SalesCartItem item : cartItems) {
+            if (item.getCode().equals(product.getCode())) {
+                int newQty = item.getQuantity() + 1;
+
+                if (product.getQuantity() < newQty) {
+                    showAlert("Insufficient Stock", "Only " + product.getQuantity() + " left in stock.");
+                    productCodeField.clear();
+                    return;
+                }
+
+                item.setQuantity(newQty);
+                item.setSubtotal(product.getPrice() * newQty);
+                updateTotal();
+                productCodeField.clear();
+                return;
+            }
+        }
+
+        // Add new product if not already in cart
+        if (product.getQuantity() < 1) {
+            showAlert("Out of Stock", "This product is currently out of stock.");
+            productCodeField.clear();
+            return;
+        }
+
+        cartItems.add(new SalesCartItem(
+                product.getCode(), product.getName(), product.getPrice(), 1
+        ));
+
+        updateTotal();
+        productCodeField.clear();
     }
 
 

@@ -25,6 +25,7 @@
         <TextField fx:id="searchField" promptText="Search by name..." onKeyReleased="#handleSearch"/>
         <Button fx:id="removeButton" text="Remove" onAction="#handleRemove"/>
         <Button fx:id="editButton" text="Edit"/>
+        <Button fx:id="deleteButton" text="Delete"/>
 
     </HBox>
 </VBox>
