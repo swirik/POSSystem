@@ -6,7 +6,7 @@
 <?import javafx.scene.Scene?>
 <?import javafx.scene.Parent?>
 
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="system.AddProductController"
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="system.controller.AddProductController"
       spacing="10" alignment="CENTER" onKeyPressed="#handleKeyPressed"
 >
     <padding>

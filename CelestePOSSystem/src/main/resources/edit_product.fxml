@@ -7,7 +7,7 @@
 <?import javafx.scene.Parent?>
 
 
-<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="system.EditProductController"
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="system.controller.EditProductController"
       spacing="10" alignment="CENTER">
     <padding>
         <Insets top="20" right="20" bottom="20" left="20"/>

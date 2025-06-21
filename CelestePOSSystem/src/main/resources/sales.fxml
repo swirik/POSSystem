@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="system.controller.SalesController"
+      spacing="10" alignment="TOP_CENTER" style="-fx-background-color: #FAFAFA;">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Sales / Billing System" style="-fx-font-size: 20px;"/>
+
+    <HBox spacing="10">
+        <TextField fx:id="productCodeField" promptText="Product Code"/>
+        <TextField fx:id="quantityField" promptText="Quantity"/>
+        <Button fx:id="addToCartButton" text="Add to Cart" onAction="#handleAddToCart"/>
+    </HBox>
+
+    <TableView fx:id="cartTable" prefWidth="600">
+        <columns>
+            <TableColumn fx:id="codeColumn" text="Code" prefWidth="100"/>
+            <TableColumn fx:id="nameColumn" text="Product Name" prefWidth="150"/>
+            <TableColumn fx:id="priceColumn" text="Price" prefWidth="100"/>
+            <TableColumn fx:id="quantityColumn" text="Quantity" prefWidth="100"/>
+            <TableColumn fx:id="subtotalColumn" text="Subtotal" prefWidth="150"/>
+        </columns>
+    </TableView>
+
+    <Label fx:id="totalLabel" text="Total: ₱0.00" style="-fx-font-size: 16px;"/>
+
+    <HBox spacing="10">
+        <Button fx:id="completeSaleButton" text="Complete Sale" onAction="#handleCompleteSale"/>
+        <Button text="Clear Cart" onAction="#handleClearCart"/>
+    </HBox>
+</VBox>

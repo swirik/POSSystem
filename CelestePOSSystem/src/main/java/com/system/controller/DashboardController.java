@@ -2,6 +2,7 @@ package system.controller;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
@@ -18,27 +19,48 @@ public class DashboardController {
     @FXML private StackPane mainContent;
     @FXML private Label labelContent;
 
+    private Parent inventoryView;
+    private InventoryController inventoryController;
+
+    private Parent salesView;
+    private SalesController salesController;
+
+
+
     @FXML
-    public void initialize() {
-            btnHome.setOnAction(e -> showHome());
-        btnInventory.setOnAction(e -> loadFXMLIntoMain("/views/inventory.fxml"));
-        btnSales.setOnAction(e -> loadFXMLIntoMain("/views/sales.fxml"));
+    public void initialize() throws IOException {
+        FXMLLoader inventoryLoader = new FXMLLoader(getClass().getResource("/inventory.fxml"));
+        inventoryView = inventoryLoader.load();
+        inventoryController = inventoryLoader.getController();
+
+        FXMLLoader salesLoader = new FXMLLoader(getClass().getResource("/sales.fxml"));
+        salesView = salesLoader.load();
+        salesController = salesLoader.getController();
+
+        salesController.setInventoryController(inventoryController);
+
+        btnHome.setOnAction(e -> showHome());
+        btnInventory.setOnAction(e -> loadInventory());
+        btnSales.setOnAction(e -> loadSales());
         btnExit.setOnAction(e -> System.exit(0));
+
+        showHome();
     }
 
-        private void showHome() {
+    private void showHome() {
         mainContent.getChildren().clear();
         mainContent.getChildren().add(labelContent);
         labelContent.setText("(Home Screen)");
     }
 
-    private void loadFXMLIntoMain(String fxmlPath) {
-        try {
-            Node node = FXMLLoader.load(getClass().getResource("/inventory.fxml"));
-            mainContent.getChildren().clear();
-            mainContent.getChildren().add(node);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void loadInventory() {
+        mainContent.getChildren().clear();
+        mainContent.getChildren().add(inventoryView);
     }
+
+    private void loadSales() {
+        mainContent.getChildren().clear();
+        mainContent.getChildren().add(salesView);
+    }
+
 }

@@ -1,14 +1,17 @@
 package system.controller;
+import system.SalesCartItem;
+import system.Product;
+import system.utils.DatabaseHelper;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import system.SalesCartItem;
-import system.Product;
-import system.Inventory;
-import system.utils.DatabaseHelper;
+
 public class SalesController {
+
+    public Button addToCartButton;
+    public Button completeSaleButton;
 
     @FXML private TextField productCodeField;
     @FXML private TextField quantityField;
@@ -21,6 +24,7 @@ public class SalesController {
     @FXML private Label totalLabel;
 
     private final ObservableList<SalesCartItem> cartItems = FXCollections.observableArrayList();
+    private InventoryController inventoryController;
 
     @FXML
     public void initialize() {
@@ -32,6 +36,10 @@ public class SalesController {
 
         cartTable.setItems(cartItems);
         updateTotal();
+    }
+
+    public void setInventoryController(InventoryController controller) {
+        this.inventoryController = controller;
     }
 
     @FXML
@@ -71,6 +79,8 @@ public class SalesController {
         quantityField.clear();
     }
 
+
+
     @FXML
     private void handleCompleteSale() {
         if (cartItems.isEmpty()) {
@@ -85,6 +95,9 @@ public class SalesController {
         showAlert("Sale Completed", "Transaction complete. Thank you!");
         cartItems.clear();
         updateTotal();
+        if (inventoryController != null) {
+            inventoryController.refreshTable(); // 🔁 refresh inventory screen
+        }
     }
 
     @FXML
@@ -108,4 +121,5 @@ public class SalesController {
         alert.setContentText(content);
         alert.showAndWait();
     }
+
 }

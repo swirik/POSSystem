@@ -1,10 +1,15 @@
 package system.controller;
 
+
+import system.Inventory;
+import system.Product;
+import system.utils.DatabaseHelper;
+
+
+import javafx.collections.FXCollections;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import system.Inventory;
-import system.Product;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -52,7 +57,6 @@ public class InventoryController {
 
         // Button actions
         addButton.setOnAction(e -> handleAdd());
-        sortButton.setOnAction(e -> handleSort());
         removeButton.setOnAction(e -> handleRemove());
         editButton.setOnAction(e -> handleEdit());
     }
@@ -145,6 +149,9 @@ public class InventoryController {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+    public void refreshTable() {
+        productTable.setItems(FXCollections.observableArrayList(DatabaseHelper.getAllProducts()));
     }
 
 
