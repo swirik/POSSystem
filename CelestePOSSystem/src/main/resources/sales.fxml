@@ -1,37 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.geometry.Insets?>
 
 <VBox xmlns:fx="http://javafx.com/fxml"
       fx:controller="system.controller.SalesController"
-      spacing="10" alignment="TOP_CENTER" style="-fx-background-color: #FAFAFA;">
+      spacing="15" alignment="TOP_CENTER" style="-fx-background-color: #FAFAFA;">
     <padding>
-        <Insets top="20" right="20" bottom="20" left="20"/>
+        <Insets top="20" right="30" bottom="20" left="30"/>
     </padding>
 
-    <Label text="Sales / Billing System" style="-fx-font-size: 20px;"/>
+    <Label text="Sales / Billing System" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
 
-    <HBox spacing="10">
-        <TextField fx:id="productCodeField" promptText="Product Code"/>
-        <TextField fx:id="quantityField" promptText="Quantity"/>
+    <!-- Input Section -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Product Code:"/>
+        <TextField fx:id="productCodeField" promptText="Scan or enter code" prefWidth="150"/>
+
+        <Label text="Quantity:"/>
+        <TextField fx:id="quantityField" promptText="Qty" prefWidth="80"/>
+
         <Button fx:id="addToCartButton" text="Add to Cart" onAction="#handleAddToCart"/>
     </HBox>
 
-    <TableView fx:id="cartTable" prefWidth="600">
+    <!-- Cart Table -->
+    <TableView fx:id="cartTable" prefWidth="700" prefHeight="300">
         <columns>
             <TableColumn fx:id="codeColumn" text="Code" prefWidth="100"/>
-            <TableColumn fx:id="nameColumn" text="Product Name" prefWidth="150"/>
+            <TableColumn fx:id="nameColumn" text="Product Name" prefWidth="220"/>
             <TableColumn fx:id="priceColumn" text="Price" prefWidth="100"/>
-            <TableColumn fx:id="quantityColumn" text="Quantity" prefWidth="100"/>
+            <TableColumn fx:id="quantityColumn" text="Qty" prefWidth="80"/>
             <TableColumn fx:id="subtotalColumn" text="Subtotal" prefWidth="150"/>
         </columns>
     </TableView>
 
-    <Label fx:id="totalLabel" text="Total: ₱0.00" style="-fx-font-size: 16px;"/>
+    <!-- Total and Actions -->
+    <HBox spacing="20" alignment="CENTER_RIGHT">
+        <Label text="Total:" style="-fx-font-size: 18px;"/>
+        <Label fx:id="totalLabel" text="₱0.00" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
 
-    <HBox spacing="10">
-        <Button fx:id="completeSaleButton" text="Complete Sale" onAction="#handleCompleteSale"/>
-        <Button text="Clear Cart" onAction="#handleClearCart"/>
+        <Button fx:id="completeSaleButton" text="Complete Sale" onAction="#handleCompleteSale" style="-fx-font-size: 14px;"/>
+        <Button text="Clear Cart" onAction="#handleClearCart" style="-fx-font-size: 14px;"/>
     </HBox>
 </VBox>

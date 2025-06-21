@@ -1,4 +1,5 @@
 package system.controller;
+import javafx.application.Platform;
 import system.SalesCartItem;
 import system.Product;
 import system.utils.DatabaseHelper;
@@ -28,6 +29,11 @@ public class SalesController {
 
     @FXML
     public void initialize() {
+        productCodeField.setOnAction(e -> {
+            handleAddToCart();  // Pressing Enter acts like button click
+        });
+
+        Platform.runLater(() -> productCodeField.requestFocus());  // Optional: auto focus barcode field
         codeColumn.setCellValueFactory(data -> data.getValue().codeProperty());
         nameColumn.setCellValueFactory(data -> data.getValue().nameProperty());
         priceColumn.setCellValueFactory(data -> data.getValue().priceProperty());
@@ -73,7 +79,29 @@ public class SalesController {
             return;
         }
 
-        cartItems.add(new SalesCartItem(product.getCode(), product.getName(), product.getPrice(), quantity));
+        boolean found = false;
+        for (SalesCartItem item : cartItems) {
+            if (item.getCode().equals(product.getCode())) {
+                int newQty = item.getQuantity() + quantity;
+
+                if (product.getQuantity() < newQty) {
+                    showAlert("Insufficient Stock", "Only " + product.getQuantity() + " left in stock.");
+                    return;
+                }
+
+                item.setQuantity(newQty);
+                item.setSubtotal(product.getPrice() * newQty);
+                found = true;
+                break;
+            }
+        }
+
+        // ✅ If not in cart, add it
+        if (!found) {
+            cartItems.add(new SalesCartItem(
+                    product.getCode(), product.getName(), product.getPrice(), quantity
+            ));
+        }
         updateTotal();
         productCodeField.clear();
         quantityField.clear();
